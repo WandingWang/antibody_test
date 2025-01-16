@@ -372,13 +372,15 @@ MUTANT_signal = False
 #Metropolis Temperature - Default: 2
 Metropolis_temp = 1.5
 #Metropolis Temperature top limit - Default: 4
-Metropolis_Temp_cap= 3
+Metropolis_Temp_cap= 4
 
 #Metropolis Temperature Used during the calculations. It could change. - Default: 
 Eff_Metropolis_Temp= Metropolis_temp
 
 #Number of consecutive discarded results. - Default: 0
 Consecutive_DISCARD_Count= 4
+
+MP_correction = False
 ######################################### MAIN PROCESS ######################################
 
 
@@ -429,7 +431,7 @@ for sequence in range (0,max_mutant+1):
             logging.info("Making a new mutation.")
             #keep_hydration = False
             #make_new_mutation(pdb_file, res_position, chain, new_restype, res_pos_list,res_weight_files, new_restype_list, keep_hydration, output_name)
-            command_mutant = (f"python {make_mutation_modeller_py} {pdb_file} -o ./Mutant{sequence} -rl {res_pos_list}-v")
+            command_mutant = (f"python {make_mutation_modeller_py} {pdb_file} -o ./Mutant{sequence} -rl {res_pos_list} -v")
             subprocess.run(command_mutant, shell =True, check = True)
             #attempts += 1
             new_mutant =False
@@ -606,12 +608,17 @@ for sequence in range (0,max_mutant+1):
     else:
         RandNum = float(Prob)
     # Metropolis
-    MP = math.exp(-(AVG+STD/2-Stored_AVG) / Eff_Metropolis_Temp)
+    if MP_correction == True:
+        MP = math.exp(-(AVG+STD/2-Stored_AVG) / Eff_Metropolis_Temp)
+    else:
+        MP = math.exp(-(AVG-Stored_AVG) / Eff_Metropolis_Temp)
     # new G < old G
     if MP >= 1:
         MP = 1
-    logging.info(f"Random Number: {RandNum}  Metropolis Prob: {MP}  AVG: {AVG}  Stored AVG: {Stored_AVG}")
+    delta_delta_G = AVG - Stored_AVG
+    logging.info(f"Random Number: {RandNum}  Metropolis Prob: {MP}  AVG: {AVG}  Stored AVG: {Stored_AVG} delta_delta_G:{delta_delta_G}")
     Metropolis_flag = 1 if RandNum < MP else 0
+
     if Metropolis_flag == 1:
         logging.info("New Configuration Accepted")
         Stored_AVG = AVG
@@ -629,7 +636,7 @@ for sequence in range (0,max_mutant+1):
                 Eff_Metropolis_Temp += 0.5*(Consecutive_DISCARD_Count - 5)
         if Eff_Metropolis_Temp > Metropolis_Temp_cap:
             Eff_Metropolis_Temp = Metropolis_Temp_cap
-    
+
     MUTANT_signal = True
     logging.info(f"Finished Mutant{sequence}")
     sequence += 1

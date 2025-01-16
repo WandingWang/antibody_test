@@ -22,9 +22,9 @@ nstcomm      		    = 100           ; frequency for center of mass motion removal
 nstxout    		        = 0		        ; scrive ogni [50ps]steps (coordinates)
 nstvout  		        = 0 		    ; No output, except for last frame (velocities)
 nstfout  		        = 0        		    ; No output, except for last frame (forces)
-nstlog   		        = 5000		; Write every step to the log
-nstenergy 		        = 5000   	; Write energies at every step
-nstxout-compressed	        = 5000		; Write a compressed trajectory
+nstlog   		        = 500		; Write every step to the log 5000
+nstenergy 		        = 500    	; Write energies at every step 5000
+nstxout-compressed	        = 500		; Write a compressed trajectory 5000
 ;compressed-x-grps      = System    		; save the whole system
 
 ;----------------------------------------------------

@@ -22,7 +22,7 @@ gmx_mmpbsa:
 modeller:
   res_pos_list: "28:H 29:H 30:H 31:H 32:H 52:H 54:H 55:H 56:H 57:H 98:H 100:H 102:H 105:H 93:L 94:L 95:L"
   max_mutant: 4          # INT: max mutation number
-  cycle_num: 10          # 10 short MDs
+  cycle_num: 2          # 10 short MDs
 
 # run 
 run:

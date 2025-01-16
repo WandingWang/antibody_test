@@ -110,7 +110,7 @@ def run_md(md_mdp, tpr_file, trj_name, sequence, cycle_number, gmx_path, top_nam
     )
     run_gromacs_command(mdrun_command, "Something wrong on MD MDRUN", pipe_file, output_file = mdrun_md_out)
 
-    if cycle_number == 1:
+    if cycle_number < 19:
         try:
             # Energy Check
             energy_command = (
