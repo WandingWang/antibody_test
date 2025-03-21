@@ -310,7 +310,7 @@ conda_modeller_name = config['Basic_setting']['conda_Modeller_name']
 if not os.path.isfile(conda_actiavte_path):
     logging.error(f"ERROR: cannot find conda activate scrpt path as {conda_actiavte_path}")
 else:
-    logging.info(f"conda activate path --> {conda_actiavte_path} version: {get_version("conda")}")
+    logging.info(f"conda activate path --> {conda_actiavte_path} version: {get_version('conda')}")
     
 # check python
 python_version = get_version("python")
